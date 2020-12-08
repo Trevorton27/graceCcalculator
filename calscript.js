@@ -36,6 +36,7 @@ for (let i = 0; i < operatorButtons.length; i++) {
   console.log(theOperator.value);
 
   theOperator.addEventListener('click', (e) => {
+    e.preventDefault();
     operator = e.target.value;
     console.log('operator =', operator);
   });
