@@ -1,46 +1,92 @@
-let memoryButtons = document.querySelectorAll(".memory-btn");
-let numbersButtons = document.querySelectorAll(".number-btn");
-let operatorButtons = document.querySelectorAll(".operator");
-const displayOutput = document.getElementById("display");
-console.log("displayed", displayOutput.value);
+let firstNumber = null;
+let secondNumber = null;
+let operator = null;
 
-const clearButton = document.getElementById("clear");
-clearButton.addEventListener("click", (event) => {
+let memoryButtons = document.querySelectorAll('.memory-btn');
+const numbersButtons = document.querySelectorAll('.number-btn');
+let operatorButtons = document.querySelectorAll('.operator');
+const displayOutput = document.getElementById('display');
+
+function getFirstNumber(number) {
+  firstNumber === null ? (firstNumber = number) : (firstNumber += number);
+}
+
+function getSecondNumber(number) {
+  secondNumber === null ? (secondNumber = number) : (secondNumber += number);
+}
+
+for (let i = 0; i < numbersButtons.length; i++) {
+  let number = numbersButtons[i];
+
+  number.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (operator === null) {
+      getFirstNumber(e.target.value);
+      console.log('firstNumber: ', e.target.value);
+      renderValue(firstNumber);
+    } else {
+      getSecondNumber(e.target.value);
+      renderValue(secondNumber);
+    }
+  });
+}
+
+for (let i = 0; i < operatorButtons.length; i++) {
+  let theOperator = operatorButtons[i];
+  console.log(theOperator.value);
+
+  theOperator.addEventListener('click', (e) => {
+    operator = e.target.value;
+    console.log('operator =', operator);
+  });
+}
+
+const clearButton = document.getElementById('clear');
+clearButton.addEventListener('click', (event) => {
   event.preventDefault();
   console.log(`clicked: ${clearButton.textContent}`);
   displayOutput.value = clearButton.textContent;
 });
 
-const equalButton = document.getElementById("equal");
-equalButton.addEventListener("click", (event) => {
-  event.preventDefault();
-  console.log(`clicked: ${equalButton.textContent}`);
-  displayOutput.value = equalButton.textContent;
-});
+const equalButton = document.getElementById('equal');
+equalButton.addEventListener('click', calculate(firstNumber, secondNumber));
+
+function calculate(firstNumber, secondNumber) {
+  let num1 = parseFloat(firstNumber);
+  let num2 = parseFloat(secondNumber);
+
+  const result = num1 + num2;
+  displayOutput.value = result;
+}
+
+function renderValue(value) {
+  displayOutput.value = value;
+  console.log('display value: ', value);
+}
 
 memoryButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
+  button.addEventListener('click', (event) => {
     event.preventDefault();
     console.log(`clicked: ${button.textContent}`);
     displayOutput.value = button.textContent;
   });
 });
 
-numbersButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    event.preventDefault();
-    console.log(`clicked: ${button.textContent}`);
-    displayOutput.value = button.textContent;
-  });
-});
+// numbersButtons.forEach((button) => {
+//   button.addEventListener('click', (event) => {
+//     event.preventDefault();
+//     console.log(`clicked: ${button.textContent}`);
+//     displayOutput.value = button.textContent;
+//   });
+// });
 
-operatorButtons.forEach((button) => {
-  button.addEventListener("click", (event) => {
-    event.preventDefault();
-    console.log(`clicked: ${button.textContent}`);
-    displayOutput.value = button.textContent;
-  });
-});
+// operatorButtons.forEach((button) => {
+//   button.addEventListener('click', (event) => {
+//     event.preventDefault();
+//     console.log(`clicked: ${button.textContent}`);
+//     console.log('button value: ', button.value);
+//   });
+// });
 
 // / TEST CASE
 // Description: Adding 1 + 2 = 3
